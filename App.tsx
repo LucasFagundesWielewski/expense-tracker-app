@@ -1,35 +1,88 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { AuthProvider } from './src/contexts/AuthContext';
+import { StyleSheet, ActivityIndicator, View } from 'react-native';
+import { AuthProvider, useAuth } from './src/contexts/AuthContext';
 import Dashboard from './src/pages/Dashboard';
 import LoginPage from './src/pages/LoginPage';
 import RegisterPage from './src/pages/RegisterPage';
 import PasswordResetPage from './src/pages/PasswordResetPage';
+import ExpenseForm from './src/components/Expenses/ExpenseForm';
 
 const Stack = createStackNavigator();
+
+function AppNavigator() {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#007bff" />
+      </View>
+    );
+  }
+
+  return (
+    <Stack.Navigator initialRouteName={user ? 'Dashboard' : 'Login'}>
+      {!user ? (
+        <>
+          {/* Login Page */}
+          <Stack.Screen 
+            name="Login" 
+            component={LoginPage} 
+            options={{ title: 'Login' }} 
+          />
+
+          {/* Register Page */}
+          <Stack.Screen 
+            name="Register" 
+            component={RegisterPage} 
+            options={{ title: 'Register' }} 
+          />
+
+          {/* Password Reset Page */}
+          <Stack.Screen 
+            name="PasswordReset" 
+            component={PasswordResetPage} 
+            options={{ title: 'Reset Password' }} 
+          />
+        </>
+      ) : (
+        <>
+          {/* Dashboard */}
+          <Stack.Screen 
+            name="Dashboard" 
+            component={Dashboard} 
+            options={{ title: 'Dashboard' }} 
+          />
+
+          {/* Expense Form (Add/Edit Expense) */}
+          <Stack.Screen 
+            name="ExpenseForm" 
+            component={ExpenseForm} 
+            options={{ title: 'Manage Expense' }} 
+          />
+        </>
+      )}
+    </Stack.Navigator>
+  );
+}
 
 export default function App() {
   return (
     <AuthProvider>
       <NavigationContainer>
-        <View style={styles.container}>
-          <Stack.Navigator initialRouteName="Login">
-            <Stack.Screen name="Dashboard" component={Dashboard} />
-            <Stack.Screen name="Login" component={LoginPage} />
-            <Stack.Screen name="Register" component={RegisterPage} />
-            <Stack.Screen name="PasswordReset" component={PasswordResetPage} />
-          </Stack.Navigator>
-        </View>
+        <AppNavigator />
       </NavigationContainer>
     </AuthProvider>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  loadingContainer: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: '#fff',
   },
 });
