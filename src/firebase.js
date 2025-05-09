@@ -1,22 +1,25 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
+import Constants from 'expo-constants';
+
 
 const firebaseConfig = {
-  apiKey: "process.env.REACT_APP_FIREBASE_API_KEY",
-  authDomain: "process.env.REACT_APP_FIREBASE_PROJECT_ID + .firebaseapp.com",
-  projectId: "process.env.REACT_APP_FIREBASE_PROJECT_ID",
-  storageBucket: "process.env.REACT_APP_FIREBASE_PROJECT_ID + .appspot.com",
+  apiKey: Constants.expoConfig.extra.firebaseApiKey,
+  authDomain: `${Constants.expoConfig.extra.firebaseProjectId}.firebaseapp.com`,
+  projectId: Constants.expoConfig.extra.firebaseProjectId,
+  storageBucket: `${Constants.expoConfig.extra.firebaseProjectId}.appspot.com`,
   messagingSenderId: "855481216463",
   appId: "1:855481216463:web:6fb7e7ccd74389a5d1f6ba",
 };
 
-const app = initializeApp(firebaseConfig);
 
+const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-export {
-  auth,
-  db
-};
+
+export { auth, db };
+
+
+

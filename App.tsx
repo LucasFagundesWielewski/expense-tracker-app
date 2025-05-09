@@ -7,12 +7,16 @@ import Dashboard from './src/pages/Dashboard';
 import LoginPage from './src/pages/LoginPage';
 import RegisterPage from './src/pages/RegisterPage';
 import PasswordResetPage from './src/pages/PasswordResetPage';
-import ExpenseForm from './src/components/Expenses/ExpenseForm';
+import AuthChoicePage from './src/pages/AuthChoicePage';
+import ExpenseFormScreen from './src/pages/ExpenseFormScreen';
+
 
 const Stack = createStackNavigator();
 
+
 function AppNavigator() {
   const { user, loading } = useAuth();
+
 
   if (loading) {
     return (
@@ -22,51 +26,64 @@ function AppNavigator() {
     );
   }
 
+
   return (
-    <Stack.Navigator initialRouteName={user ? 'Dashboard' : 'Login'}>
+    <Stack.Navigator initialRouteName={user ? 'Dashboard' : 'AuthChoice'}>
       {!user ? (
         <>
-          {/* Login Page */}
-          <Stack.Screen 
-            name="Login" 
-            component={LoginPage} 
-            options={{ title: 'Login' }} 
+          {/* Auth Choice Page */}
+          <Stack.Screen
+            name="AuthChoice"
+            component={AuthChoicePage}
+            options={{ title: 'Bem-vindo' }}
           />
+
+
+          {/* Login Page */}
+          <Stack.Screen
+            name="Login"
+            component={LoginPage}
+            options={{ title: 'Login' }}
+          />
+
 
           {/* Register Page */}
-          <Stack.Screen 
-            name="Register" 
-            component={RegisterPage} 
-            options={{ title: 'Register' }} 
+          <Stack.Screen
+            name="Register"
+            component={RegisterPage}
+            options={{ title: 'Registrar' }}
           />
 
+
           {/* Password Reset Page */}
-          <Stack.Screen 
-            name="PasswordReset" 
-            component={PasswordResetPage} 
-            options={{ title: 'Reset Password' }} 
+          <Stack.Screen
+            name="PasswordReset"
+            component={PasswordResetPage}
+            options={{ title: 'Redefinir Senha' }}
           />
         </>
       ) : (
         <>
           {/* Dashboard */}
-          <Stack.Screen 
-            name="Dashboard" 
-            component={Dashboard} 
-            options={{ title: 'Dashboard' }} 
+          <Stack.Screen
+            name="Dashboard"
+            component={Dashboard}
+            options={{ title: 'Dashboard' }}
           />
 
+
           {/* Expense Form (Add/Edit Expense) */}
-          <Stack.Screen 
-            name="ExpenseForm" 
-            component={ExpenseForm} 
-            options={{ title: 'Manage Expense' }} 
+          <Stack.Screen
+            name="ExpenseForm"
+            component={ExpenseFormScreen}
+            options={{ title: 'Gerenciar Gasto' }}
           />
         </>
       )}
     </Stack.Navigator>
   );
 }
+
 
 export default function App() {
   return (
@@ -78,6 +95,7 @@ export default function App() {
   );
 }
 
+
 const styles = StyleSheet.create({
   loadingContainer: {
     flex: 1,
@@ -86,3 +104,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
 });
+
+
+
