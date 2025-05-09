@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { fetchExpenses, addExpense, updateExpense, deleteExpense } from '../services/api';
 import { useAuth } from '../contexts/AuthContext';
 import ExpenseForm from '../components/Expenses/ExpenseForm';
+import Navbar from '../components/Shared/Navbar';
 import '../styles/global.css';
 
 const Dashboard = () => {
@@ -55,48 +56,48 @@ const Dashboard = () => {
   const totalExpenses = expenses.reduce((total, expense) => total + expense.value, 0);
 
   return (
-    <div className="container">
-      <h1>Dashboard</h1>
-      <h2>Total de Gastos: R$ {totalExpenses.toFixed(2)}</h2>
-      <button className="button button-primary" onClick={openAddForm}>
-        Adicionar Despesa
-      </button>
-      {showForm && (
-        <ExpenseForm
-          onSubmit={editingExpense ? handleEditExpense : handleAddExpense}
-          existingExpense={editingExpense}
-        />
-      )}
-      <ul className="expense-list">
-        {expenses.length > 0 ? (
-          expenses.map((expense) => (
-            <li key={expense.id} className="expense-item">
-              <div>
-                <h3>{expense.description}</h3>
-                <p>Valor: R$ {expense.value.toFixed(2)}</p>
-                <p>Data: {new Date(expense.date).toLocaleDateString()}</p>
-              </div>
-              <div>
-                <button
-                  className="button button-primary"
-                  onClick={() => openEditForm(expense)}
-                >
-                  Editar
-                </button>
-                <button
-                  className="button button-danger"
-                  onClick={() => handleDeleteExpense(expense.id)}
-                >
-                  Excluir
-                </button>
-              </div>
-            </li>
-          ))
-        ) : (
-          <p>Nenhuma despesa encontrada.</p>
+    <>
+      <Navbar />
+      <div className="container">
+        <h1>Dashboard</h1>
+        <h2>Total de Gastos: R$ {totalExpenses.toFixed(2)}</h2>
+        {showForm && (
+          <ExpenseForm
+            onSubmit={editingExpense ? handleEditExpense : handleAddExpense}
+            existingExpense={editingExpense}
+          />
         )}
-      </ul>
-    </div>
+        <ul className="expense-list">
+          {expenses.length > 0 ? (
+            expenses.map((expense) => (
+              <li key={expense.id} className="expense-item">
+                <div>
+                  <h3>{expense.description}</h3>
+                  <p>Valor: R$ {expense.value.toFixed(2)}</p>
+                  <p>Data: {new Date(expense.date).toLocaleDateString()}</p>
+                </div>
+                <div>
+                  <button
+                    className="button button-primary"
+                    onClick={() => openEditForm(expense)}
+                  >
+                    Editar
+                  </button>
+                  <button
+                    className="button button-danger"
+                    onClick={() => handleDeleteExpense(expense.id)}
+                  >
+                    Excluir
+                  </button>
+                </div>
+              </li>
+            ))
+          ) : (
+            <p>Nenhuma despesa encontrada.</p>
+          )}
+        </ul>
+      </div>
+    </>
   );
 };
 

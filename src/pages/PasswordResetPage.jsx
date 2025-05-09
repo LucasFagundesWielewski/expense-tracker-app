@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import Navbar from '../components/Shared/Navbar';
 import '../styles/global.css';
 
 const PasswordResetPage = () => {
@@ -21,22 +22,25 @@ const PasswordResetPage = () => {
   };
 
   return (
-    <div className="container">
-      <h2>Redefinir Senha</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          className="input"
-          type="email"
-          placeholder="Digite seu e-mail"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <button className="button button-primary" type="submit">Redefinir Senha</button>
-      </form>
-      {message && <p className="success-message">{message}</p>}
-      {error && <p className="error">{error}</p>}
-    </div>
+    <>
+      <Navbar />
+        <div className="container">
+        <h2>Redefinir Senha</h2>
+        <form onSubmit={handleSubmit}>
+          <input
+            className="input"
+            type="email"
+            placeholder="Digite seu e-mail"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <button className="button button-primary" type="submit">Redefinir Senha</button>
+        </form>
+        {message && <p className="success-message">{message}</p>}
+        {error && <p className="error">{error}</p>}
+      </div>
+    </>
   );
 };
 

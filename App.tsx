@@ -1,42 +1,55 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { StyleSheet } from 'react-native';
-import { AuthProvider } from './src/contexts/AuthContext';
-import Navbar from './src/components/Shared/Navbar';
-import Dashboard from './src/pages/Dashboard';
+import { ActivityIndicator, View } from 'react-native';
+import { AuthProvider, useAuth } from './src/contexts/AuthContext';
+import AuthChoicePage from './src/pages/AuthChoicePage';
 import LoginPage from './src/pages/LoginPage';
 import RegisterPage from './src/pages/RegisterPage';
 import PasswordResetPage from './src/pages/PasswordResetPage';
-import ExpenseForm from './src/components/Expenses/ExpenseForm';
+import Dashboard from './src/pages/Dashboard';
 import MyAccountPage from './src/pages/MyAccountPage';
+import ExpenseFormScreen from './src/pages/ExpenseFormScreen';
 
 const Stack = createStackNavigator();
+
+function AppNavigator() {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color="#007bff" />
+      </View>
+    );
+  }
+
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      {!user ? (
+        <>
+          <Stack.Screen name="AuthChoice" component={AuthChoicePage} />
+          <Stack.Screen name="Login" component={LoginPage} />
+          <Stack.Screen name="Register" component={RegisterPage} />
+          <Stack.Screen name="PasswordReset" component={PasswordResetPage} />
+        </>
+      ) : (
+        <>
+          <Stack.Screen name="Dashboard" component={Dashboard} />
+          <Stack.Screen name="ExpenseFormScreen" component={ExpenseFormScreen} />
+          <Stack.Screen name="MyAccount" component={MyAccountPage} />
+        </>
+      )}
+    </Stack.Navigator>
+  );
+}
 
 export default function App() {
   return (
     <AuthProvider>
       <NavigationContainer>
-        {/* Navbar */}
-        <Navbar />
-        <Stack.Navigator initialRouteName="Login">
-          <Stack.Screen name="Login" component={LoginPage} options={{ title: 'Login' }} />
-          <Stack.Screen name="Register" component={RegisterPage} options={{ title: 'Registrar' }} />
-          <Stack.Screen name="PasswordReset" component={PasswordResetPage} options={{ title: 'Redefinir Senha' }} />
-          <Stack.Screen name="Dashboard" component={Dashboard} options={{ title: 'Dashboard' }} />
-          <Stack.Screen name="ExpenseForm" component={ExpenseForm} options={{ title: 'Gerenciar Gasto' }} />
-          <Stack.Screen name="MyAccount" component={MyAccountPage} options={{ title: 'Minha Conta' }} />
-        </Stack.Navigator>
+        <AppNavigator />
       </NavigationContainer>
     </AuthProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-  },
-});

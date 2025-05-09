@@ -21,7 +21,7 @@ const Navbar = () => {
       <TouchableOpacity onPress={() => navigation.navigate('Dashboard')}>
         <Text style={styles.navLink}>Dashboard</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('ExpenseForm')}>
+      <TouchableOpacity onPress={() => navigation.navigate('ExpenseFormScreen')}>
         <Text style={styles.navLink}>Gerenciar Gastos</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate('MyAccount')}>
