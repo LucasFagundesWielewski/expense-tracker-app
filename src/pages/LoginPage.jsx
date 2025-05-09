@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import '../styles/global.css';
 
 const LoginPage = () => {
   const { login } = useAuth();
@@ -18,25 +19,27 @@ const LoginPage = () => {
   };
 
   return (
-    <div>
+    <div className="container">
       <h2>Login</h2>
       {error && <p className="error">{error}</p>}
       <form onSubmit={handleSubmit}>
         <input
+          className="input"
           type="email"
-          placeholder="Email"
+          placeholder="E-mail"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
         <input
+          className="input"
           type="password"
-          placeholder="Password"
+          placeholder="Senha"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit">Login</button>
+        <button className="button button-primary" type="submit">Entrar</button>
       </form>
     </div>
   );

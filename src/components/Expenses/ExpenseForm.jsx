@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import '../../styles/global.css';
 
 const ExpenseForm = ({ onSubmit, existingExpense }) => {
   const [description, setDescription] = useState('');
@@ -27,10 +28,11 @@ const ExpenseForm = ({ onSubmit, existingExpense }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="container" onSubmit={handleSubmit}>
       <div>
-        <label>Description</label>
+        <label>Descrição</label>
         <input
+          className="input"
           type="text"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
@@ -38,8 +40,9 @@ const ExpenseForm = ({ onSubmit, existingExpense }) => {
         />
       </div>
       <div>
-        <label>Value</label>
+        <label>Valor</label>
         <input
+          className="input"
           type="number"
           value={value}
           onChange={(e) => setValue(e.target.value)}
@@ -47,15 +50,18 @@ const ExpenseForm = ({ onSubmit, existingExpense }) => {
         />
       </div>
       <div>
-        <label>Date</label>
+        <label>Data</label>
         <input
+          className="input"
           type="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
           required
         />
       </div>
-      <button type="submit">{existingExpense ? 'Update Expense' : 'Add Expense'}</button>
+      <button className="button button-primary" type="submit">
+        {existingExpense ? 'Atualizar Despesa' : 'Adicionar Despesa'}
+      </button>
     </form>
   );
 };

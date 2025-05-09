@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from '../contexts/AuthContext';
+import '../styles/global.css';
 
 const PasswordResetPage = () => {
   const { resetPassword } = useAuth();
@@ -11,30 +12,30 @@ const PasswordResetPage = () => {
     e.preventDefault();
     setMessage('');
     setError('');
-
     try {
       await resetPassword(email);
-      setMessage('Check your email for password reset instructions.');
+      setMessage('Verifique seu e-mail para redefinir a senha.');
     } catch (err) {
-      setError('Failed to reset password. Please try again.');
+      setError('Erro ao redefinir a senha. Tente novamente.');
     }
   };
 
   return (
-    <div className="password-reset-page">
-      <h2>Password Reset</h2>
+    <div className="container">
+      <h2>Redefinir Senha</h2>
       <form onSubmit={handleSubmit}>
         <input
+          className="input"
           type="email"
-          placeholder="Enter your email"
+          placeholder="Digite seu e-mail"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-        <button type="submit">Reset Password</button>
+        <button className="button button-primary" type="submit">Redefinir Senha</button>
       </form>
       {message && <p className="success-message">{message}</p>}
-      {error && <p className="error-message">{error}</p>}
+      {error && <p className="error">{error}</p>}
     </div>
   );
 };
