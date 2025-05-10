@@ -1,5 +1,12 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { getAuth, onAuthStateChanged, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { 
+  getAuth, 
+  onAuthStateChanged, 
+  signOut, 
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword, 
+  sendPasswordResetEmail 
+} from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 
@@ -38,12 +45,16 @@ export const AuthProvider = ({ children }) => {
     setUser({ uid: user.uid, ...userDoc.data() });
   };
 
+  const resetPassword = async (email) => {
+    await sendPasswordResetEmail(auth, email);
+  };
+
   const logout = async () => {
     await signOut(auth);
     setUser(null);
   };
 
-  const value = { user, loading, register, login, logout };
+  const value = { user, loading, register, login, logout, resetPassword };
 
   return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;
 };

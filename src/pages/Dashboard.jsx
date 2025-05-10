@@ -55,6 +55,22 @@ const Dashboard = () => {
 
   const totalExpenses = expenses.reduce((total, expense) => total + expense.value, 0);
 
+  const groupedExpenses = expenses
+    .slice()
+    .sort((a, b) => new Date(b.date) - new Date(a.date))
+    .reduce((groups, expense) => {
+      const dateObj = new Date(expense.date);
+      const date = dateObj.toLocaleDateString('pt-BR', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        timeZone: 'UTC'
+      });
+      if (!groups[date]) groups[date] = [];
+      groups[date].push(expense);
+      return groups;
+    }, {});
+
   return (
     <>
       <Navbar />
@@ -68,28 +84,34 @@ const Dashboard = () => {
           />
         )}
         <ul className="expense-list">
-          {expenses.length > 0 ? (
-            expenses.map((expense) => (
-              <li key={expense.id} className="expense-item">
-                <div>
-                  <h3>{expense.description}</h3>
-                  <p>Valor: R$ {expense.value.toFixed(2)}</p>
-                  <p>Data: {new Date(expense.date).toLocaleDateString()}</p>
-                </div>
-                <div>
-                  <button
-                    className="button button-primary"
-                    onClick={() => openEditForm(expense)}
-                  >
-                    Editar
-                  </button>
-                  <button
-                    className="button button-danger"
-                    onClick={() => handleDeleteExpense(expense.id)}
-                  >
-                    Excluir
-                  </button>
-                </div>
+          {Object.keys(groupedExpenses).length > 0 ? (
+            Object.entries(groupedExpenses).map(([date, expensesOnDate]) => (
+              <li key={date}>
+                <h3>{date}</h3>
+                <ul>
+                  {expensesOnDate.map((expense) => (
+                    <li key={expense.id} className="expense-item">
+                      <div>
+                        <h4>{expense.description}</h4>
+                        <p>Valor: R$ {expense.value.toFixed(2)}</p>
+                      </div>
+                      <div>
+                        <button
+                          className="button button-primary"
+                          onClick={() => openEditForm(expense)}
+                        >
+                          Editar
+                        </button>
+                        <button
+                          className="button button-danger"
+                          onClick={() => handleDeleteExpense(expense.id)}
+                        >
+                          Excluir
+                        </button>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
               </li>
             ))
           ) : (
