@@ -1,18 +1,19 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 
-
 const AuthChoicePage = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Bem-vindo!</Text>
       <Text style={styles.subtitle}>Escolha uma opção para continuar:</Text>
-      <Button title="Login" onPress={() => navigation.navigate('Login')} />
-      <Button title="Registrar" onPress={() => navigation.navigate('Register')} />
+      <View style={styles.buttonGroup}>
+        <Button title="Login" onPress={() => navigation.navigate('Login')} />
+        <View style={styles.spacer} />
+        <Button title="Registrar" onPress={() => navigation.navigate('Register')} />
+      </View>
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
@@ -31,10 +32,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     textAlign: 'center',
   },
+  buttonGroup: {
+    width: '100%',
+  },
+  spacer: {
+    height: 10,
+  },
 });
 
-
 export default AuthChoicePage;
-
-
-

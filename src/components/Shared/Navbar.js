@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { useAuth } from '../../contexts/AuthContext';
+import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import useAuth from '../../hooks/useAuth';
 import { useNavigation } from '@react-navigation/native';
 
 const Navbar = () => {
@@ -8,8 +8,17 @@ const Navbar = () => {
   const navigation = useNavigation();
 
   const handleLogout = async () => {
-    await logout();
-    navigation.navigate('Login');
+    Alert.alert(
+      "Confirmar Logout",
+      "Tem certeza que deseja sair?",
+      [
+        { text: "Cancelar", style: "cancel" },
+        { text: "Sair", onPress: async () => {
+          await logout();
+          navigation.navigate('Login');
+        }},
+      ]
+    );
   };
 
   return (
