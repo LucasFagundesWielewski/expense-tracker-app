@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import useAuth from '../../hooks/useAuth';
 import { useNavigation } from '@react-navigation/native';
 
@@ -15,7 +16,6 @@ const Navbar = () => {
         { text: "Cancelar", style: "cancel" },
         { text: "Sair", onPress: async () => {
           await logout();
-          navigation.navigate('Login');
         }},
       ]
     );
@@ -24,23 +24,28 @@ const Navbar = () => {
   return (
     <View style={styles.navbar}>
       <Text style={styles.title}>💸 Expense Tracker</Text>
-      <View style={styles.links}>
-        <TouchableOpacity onPress={() => navigation.navigate('Dashboard')}>
-          <Text style={styles.link}>Dashboard</Text>
+      <View style={styles.tabBar}>
+        <TouchableOpacity style={styles.tabBtn} onPress={() => navigation.navigate('Dashboard')}>
+          <Ionicons name="home-outline" size={22} color="#6366f1" />
+          <Text style={styles.tabLabel}>Dashboard</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('ExpenseFormScreen')}>
-          <Text style={styles.link}>Gastos</Text>
+        <TouchableOpacity style={styles.tabBtn} onPress={() => navigation.navigate('ExpenseFormScreen')}>
+          <MaterialIcons name="add-circle-outline" size={22} color="#22c55e" />
+          <Text style={styles.tabLabel}>Gastos</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('MyAccount')}>
-          <Text style={styles.link}>Minha Conta</Text>
+        <TouchableOpacity style={styles.tabBtn} onPress={() => navigation.navigate('MyAccount')}>
+          <Ionicons name="person-outline" size={22} color="#6366f1" />
+          <Text style={styles.tabLabel}>Conta</Text>
         </TouchableOpacity>
         {user ? (
-          <TouchableOpacity onPress={handleLogout}>
-            <Text style={[styles.link, styles.logout]}>Sair</Text>
+          <TouchableOpacity style={styles.tabBtn} onPress={handleLogout}>
+            <MaterialIcons name="logout" size={22} color="#ef4444" />
+            <Text style={[styles.tabLabel, styles.logout]}>Sair</Text>
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-            <Text style={styles.link}>Login</Text>
+          <TouchableOpacity style={styles.tabBtn} onPress={() => navigation.navigate('Login')}>
+            <Ionicons name="log-in-outline" size={22} color="#6366f1" />
+            <Text style={styles.tabLabel}>Login</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -50,29 +55,49 @@ const Navbar = () => {
 
 const styles = StyleSheet.create({
   navbar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: '#007bff',
-    padding: 16,
+    backgroundColor: '#fff',
+    paddingTop: 44,
+    paddingBottom: 8,
+    paddingHorizontal: 0,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ececec',
+    elevation: 4,
+    shadowColor: '#22223b',
+    shadowOpacity: 0.08,
+    shadowRadius: 6,
   },
   title: {
-    color: '#fff',
+    color: '#22223b',
     fontWeight: 'bold',
-    fontSize: 18,
+    fontSize: 22,
+    textAlign: 'center',
+    marginBottom: 8,
+    letterSpacing: 1,
   },
-  links: {
+  tabBar: {
     flexDirection: 'row',
+    justifyContent: 'space-around',
     alignItems: 'center',
+    backgroundColor: '#f6f8fa',
+    borderRadius: 16,
+    marginHorizontal: 12,
+    paddingVertical: 6,
+    marginBottom: 2,
   },
-  link: {
-    color: '#fff',
-    marginLeft: 16,
-    fontSize: 16,
+  tabBtn: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+    paddingVertical: 4,
+  },
+  tabLabel: {
+    fontSize: 13,
+    color: '#6366f1',
+    marginTop: 2,
+    fontWeight: '600',
   },
   logout: {
-    color: '#dc3545',
-    fontWeight: 'bold',
+    color: '#ef4444',
   },
 });
 

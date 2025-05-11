@@ -1,9 +1,10 @@
 import { db } from '../firebase';
-import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from 'firebase/firestore';
+import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, where } from 'firebase/firestore';
 
-export const fetchExpenses = async () => {
+export const fetchExpenses = async (userId) => {
   const expensesCollection = collection(db, 'expenses');
-  const expenseSnapshot = await getDocs(expensesCollection);
+  const q = query(expensesCollection, where('userId', '==', userId));
+  const expenseSnapshot = await getDocs(q);
   const expenseList = expenseSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
   return expenseList;
 };

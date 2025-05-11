@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ScrollView, Button, StyleSheet, ActivityIndicator, Alert } from 'react-native';
+import { View, Text, ScrollView, Button, StyleSheet, ActivityIndicator, Alert, Modal, Pressable, TouchableOpacity } from 'react-native';
 import { fetchExpenses, addExpense, updateExpense, deleteExpense } from '../services/api';
 import useAuth from '../hooks/useAuth';
 import ExpenseForm from '../components/Expenses/ExpenseForm';
+import Navbar from '../components/Shared/Navbar';
+import { Ionicons } from '@expo/vector-icons';
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -49,11 +51,6 @@ const Dashboard = () => {
     ]);
   };
 
-  const openAddForm = () => {
-    setEditingExpense(null);
-    setShowForm(true);
-  };
-
   const openEditForm = (expense) => {
     setEditingExpense(expense);
     setShowForm(true);
@@ -87,41 +84,54 @@ const Dashboard = () => {
     }, {});
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.header}>Dashboard</Text>
-      <Text style={styles.total}>Total de Gastos: R$ {totalExpenses.toFixed(2)}</Text>
+    <>
+      <Navbar />
+      <ScrollView contentContainerStyle={styles.container}>
+        <Text style={styles.header}>Dashboard</Text>
+        <Text style={styles.total}>Total de Gastos: R$ {totalExpenses.toFixed(2)}</Text>
 
-      <Button title="Adicionar Despesa" onPress={openAddForm} />
-
-      {showForm && (
-        <ExpenseForm
-          onSubmit={editingExpense ? handleEditExpense : handleAddExpense}
-          existingExpense={editingExpense}
-        />
-      )}
-
-      {Object.keys(groupedExpenses).length > 0 ? (
-        Object.entries(groupedExpenses).map(([date, expensesOnDate]) => (
-          <View key={date} style={styles.group}>
-            <Text style={styles.date}>{date}</Text>
-            {expensesOnDate.map((expense) => (
-              <View key={expense.id} style={styles.expenseItem}>
-                <View>
-                  <Text style={styles.description}>{expense.description}</Text>
-                  <Text>Valor: R$ {expense.value.toFixed(2)}</Text>
+        {Object.keys(groupedExpenses).length > 0 ? (
+          Object.entries(groupedExpenses).map(([date, expensesOnDate]) => (
+            <View key={date} style={styles.group}>
+              <Text style={styles.date}>{date}</Text>
+              {expensesOnDate.map((expense) => (
+                <View key={expense.id} style={styles.expenseItem}>
+                  <View>
+                    <Text style={styles.description}>{expense.description}</Text>
+                    <Text>Valor: R$ {expense.value.toFixed(2)}</Text>
+                  </View>
+                  <View style={styles.buttons}>
+                    <Button title="Editar" onPress={() => openEditForm(expense)} />
+                    <Button title="Excluir" color="red" onPress={() => handleDeleteExpense(expense.id)} />
+                  </View>
                 </View>
-                <View style={styles.buttons}>
-                  <Button title="Editar" onPress={() => openEditForm(expense)} />
-                  <Button title="Excluir" color="red" onPress={() => handleDeleteExpense(expense.id)} />
-                </View>
-              </View>
-            ))}
-          </View>
-        ))
-      ) : (
-        <Text style={{ marginTop: 20 }}>Nenhuma despesa encontrada.</Text>
-      )}
-    </ScrollView>
+              ))}
+            </View>
+          ))
+        ) : (
+          <Text style={{ marginTop: 20 }}>Nenhuma despesa encontrada.</Text>
+        )}
+      </ScrollView>
+
+      <Modal
+        visible={showForm}
+        animationType="fade"
+        transparent
+        onRequestClose={() => setShowForm(false)}
+      >
+        <Pressable style={styles.modalOverlay} onPress={() => setShowForm(false)}>
+          <Pressable style={styles.modalContent} onPress={(e) => e.stopPropagation()}>
+            <TouchableOpacity style={styles.closeIcon} onPress={() => setShowForm(false)}>
+              <Ionicons name="close" size={28} color="#22223b" />
+            </TouchableOpacity>
+            <ExpenseForm
+              onSubmit={editingExpense ? handleEditExpense : handleAddExpense}
+              existingExpense={editingExpense}
+            />
+          </Pressable>
+        </Pressable>
+      </Modal>
+    </>
   );
 };
 
@@ -165,6 +175,32 @@ const styles = StyleSheet.create({
     marginTop: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(34, 34, 59, 0.4)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 24,
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 20,
+    width: '100%',
+    maxWidth: 400,
+    elevation: 8,
+    shadowColor: '#22223b',
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+    position: 'relative',
+  },
+  closeIcon: {
+    position: 'absolute',
+    top: 12,
+    right: 12,
+    zIndex: 2,
+    padding: 4,
   },
 });
 

@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import useAuth from '../hooks/useAuth';
+import { useNavigation } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 
 const RegisterPage = () => {
   const { register } = useAuth();
+  const navigation = useNavigation();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -12,16 +15,22 @@ const RegisterPage = () => {
 
   const handleSubmit = async () => {
     setError('');
+    if (!name || !email || !password || !phone) {
+      setError('Preencha todos os campos para registrar.');
+      return;
+    }
     try {
       await register(email, password, name, phone);
-      // Você pode navegar para outra tela aqui, se desejar
     } catch (err) {
-      setError(err.message);
+      setError('Erro ao registrar. Verifique os dados e tente novamente.');
     }
   };
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+        <Ionicons name="arrow-back" size={28} color="#6366f1" />
+      </TouchableOpacity>
       <Text style={styles.title}>Registrar</Text>
       {error ? <Text style={styles.error}>{error}</Text> : null}
 
@@ -65,6 +74,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#fff',
   },
+  backButton: {
+    position: 'absolute',
+    top: 48,
+    left: 24,
+    zIndex: 2,
+    padding: 4,
+  },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
@@ -79,9 +95,12 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   error: {
-    color: 'red',
+    color: '#e11d48',
     marginBottom: 16,
     textAlign: 'center',
+    backgroundColor: '#fde8ec',
+    padding: 8,
+    borderRadius: 6,
   },
 });
 
