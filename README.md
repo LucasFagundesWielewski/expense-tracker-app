@@ -57,8 +57,8 @@ Cada usuário pode cadastrar, visualizar, editar e remover seus próprios gastos
 1. Renomeie o arquivo `.env.example` para `.env`.
 2. Preencha com suas credenciais do Firebase:
 
-REACT_APP_FIREBASE_API_KEY=SUACHAVE
-REACT_APP_FIREBASE_PROJECT_ID=SEUPROJECTID
+- REACT_APP_FIREBASE_API_KEY=SUACHAVE
+- REACT_APP_FIREBASE_PROJECT_ID=SEUPROJECTID
 
 ### 3. Instale as dependências
 
