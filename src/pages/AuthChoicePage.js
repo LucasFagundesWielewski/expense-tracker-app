@@ -10,6 +10,8 @@ const AuthChoicePage = ({ navigation }) => {
         <Button title="Login" onPress={() => navigation.navigate('Login')} />
         <View style={styles.spacer} />
         <Button title="Registrar" onPress={() => navigation.navigate('Register')} />
+        <View style={styles.spacer} />
+        <Button title="Esqueci minha senha" onPress={() => navigation.navigate('PasswordReset')} />
       </View>
     </View>
   );

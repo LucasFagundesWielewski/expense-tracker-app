@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
-import Navbar from '../components/Shared/Navbar';
+import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import useAuth from '../hooks/useAuth';
+import { useNavigation } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 
 const PasswordResetPage = () => {
   const { resetPassword } = useAuth();
+  const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
@@ -21,23 +23,23 @@ const PasswordResetPage = () => {
   };
 
   return (
-    <>
-      <Navbar />
-      <View style={styles.container}>
-        <Text style={styles.title}>Redefinir Senha</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Digite seu e-mail"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-          autoCapitalize="none"
-        />
-        <Button title="Redefinir Senha" onPress={handleSubmit} color="#2563eb" />
-        {message ? <Text style={styles.success}>{message}</Text> : null}
-        {error ? <Text style={styles.error}>{error}</Text> : null}
-      </View>
-    </>
+    <View style={styles.container}>
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+        <Ionicons name="arrow-back" size={28} color="#6366f1" />
+      </TouchableOpacity>
+      <Text style={styles.title}>Redefinir Senha</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Digite seu e-mail"
+        value={email}
+        onChangeText={setEmail}
+        keyboardType="email-address"
+        autoCapitalize="none"
+      />
+      <Button title="Redefinir Senha" onPress={handleSubmit} color="#2563eb" />
+      {message ? <Text style={styles.success}>{message}</Text> : null}
+      {error ? <Text style={styles.error}>{error}</Text> : null}
+    </View>
   );
 };
 
@@ -46,11 +48,20 @@ const styles = StyleSheet.create({
     padding: 24,
     flex: 1,
     backgroundColor: '#fff',
+    justifyContent: 'center',
+  },
+  backButton: {
+    position: 'absolute',
+    top: 48,
+    left: 24,
+    zIndex: 2,
+    padding: 4,
   },
   title: {
     fontSize: 24,
     marginBottom: 20,
     fontWeight: 'bold',
+    textAlign: 'center',
   },
   input: {
     borderWidth: 1,

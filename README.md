@@ -52,7 +52,13 @@ Cada usuário pode cadastrar, visualizar, editar e remover seus próprios gastos
 - Node.js instalado
 - Expo CLI (instala automaticamente com o comando `npx expo`)
 
-### 2. Configuração das Variáveis de Ambiente
+### 2. Configuração do Firebase
+
+1. Crie um projeto no [Firebase Console](https://console.firebase.google.com/).
+2. Ative o Authentication (e-mail/senha) e o Firestore Database.
+3. Copie as credenciais do seu projeto.
+
+### 3. Configuração das Variáveis de Ambiente
 
 1. Renomeie o arquivo `.env.example` para `.env`.
 2. Preencha com suas credenciais do Firebase:
@@ -60,13 +66,13 @@ Cada usuário pode cadastrar, visualizar, editar e remover seus próprios gastos
 - REACT_APP_FIREBASE_API_KEY=SUACHAVE
 - REACT_APP_FIREBASE_PROJECT_ID=SEUPROJECTID
 
-### 3. Instale as dependências
+### 4. Instale as dependências
 
 Abra o terminal na pasta do projeto e execute:
 
 - `npm install`
 
-### 4. Rode o projeto
+### 5. Rode o projeto
 
 No terminal, execute:
 
