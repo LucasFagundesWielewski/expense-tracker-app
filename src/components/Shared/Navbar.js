@@ -23,7 +23,7 @@ const Navbar = () => {
 
   return (
     <View style={styles.navbar}>
-      <Text style={styles.title}>💸 Expense Tracker</Text>
+      <Text style={styles.title}>Expense Tracker</Text>
       <View style={styles.tabBar}>
         <TouchableOpacity style={styles.tabBtn} onPress={() => navigation.navigate('Dashboard')}>
           <Ionicons name="home-outline" size={22} color="#6366f1" />
